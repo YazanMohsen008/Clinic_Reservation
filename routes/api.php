@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\CountryController;
 use Illuminate\Http\Request;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +17,34 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+/*
+Route::get    ('countries', [CountryController::class, 'getCountries']);
+Route::get    ('countries/{id}', [CountryController::class, 'getCountry']);
+Route::post   ('country', [CountryController::class, 'storeCountry']);
+Route::put    ('country/{id}', [CountryController::class, 'updateCountry']);
+Route::DELETE ('country/{id}', [CountryController::class, 'deleteCountry']);
+Route::get        ('downloadFile', [FileController::class, 'Download']);
+Route::post       ('uploadFile', [FileController::class, 'Upload']);
+*/
+Route::post       ('register', [AuthController::class, 'register']);
+Route::post       ('login   ', [AuthController::class, 'login']);
+Route::apiResource('specialization',"App\Http\Controllers\SpecializationController");
+Route::apiResource('clinic',"App\Http\Controllers\ClinicController");
+Route::apiResource('phoneNumber',"App\Http\Controllers\PhoneNumberController");
+Route::apiResource('patient',"App\Http\Controllers\PatientController");
+Route::apiResource('reservation_requests',"App\Http\Controllers\ReservationRequestController");
+Route::apiResource('consultation',"App\Http\Controllers\ConsultationController");
+Route::apiResource('patient_file_transfer_request',"App\Http\Controllers\PatientFileTransferRequestController");
+Route::apiResource('patient_card',"App\Http\Controllers\PatientCardController");
+Route::apiResource('extra_information',"App\Http\Controllers\ExtraInformationController");
+Route::apiResource('diagnosis',"App\Http\Controllers\DiagnosisController");
+Route::apiResource('medicines',"App\Http\Controllers\MedicineController");
+Route::apiResource('attachments',"App\Http\Controllers\AttachmentController");
+
+Route::middleware('auth:sanctum')->group(function (){
+    Route::get         ('user', [AuthController::class, 'getUser']);
+    Route::post        ('logout',  [AuthController::class, 'logout' ]);
 });
