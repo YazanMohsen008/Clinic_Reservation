@@ -28,7 +28,11 @@ class ExtraInformationController extends Controller
         return response()->json($Data, 201);
     }
 
-
+    public function storeExtraInformation(array $extraInformation)
+    {
+        $Data = ExtraInformation::create($extraInformation);
+        return response()->json($Data,201);
+    }
     public function show($id)
     {
         $Data = ExtraInformation::find($id);

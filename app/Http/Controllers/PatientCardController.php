@@ -24,7 +24,44 @@ class PatientCardController extends Controller
         if($validator->fails())
             return response()->json($validator->errors(),400);
         $Data = PatientCard::create($request->all());
+
+        $diagnosisController = new DiagnosisController();
+        $diagnosis = $request->input("diagnosis");
+        foreach ($diagnosis as $dia) {
+            $dia["patient_Id"]=$Data["id"];
+            $diagnosisController->storeDiagnosis($dia);
+        }
+        $extraInformationController = new ExtraInformationController();
+        $extra_information = $request->input("extra-information");
+        foreach ($extra_information as $information) {
+            $information["patient_Id"]=$Data["id"];
+            $extraInformationController->storeExtraInformation($information);
+        }
         return response()->json($Data, 201);
+    }
+    public function storePatientCard(array $patientCard)
+    {
+        $rules=[
+            'name'=>'required|min:3',
+        ];
+        $validator=Validator::make($patientCard,$rules);
+        if($validator->fails())
+            return response()->json($validator->errors(),400);
+        $Data = PatientCard::create($patientCard);
+
+        $diagnosisController = new DiagnosisController();
+        $diagnosis = $patientCard["diagnosis"];
+        foreach ($diagnosis as $dia) {
+            $dia["patient_Id"]=$Data["id"];
+            $diagnosisController->storeDiagnosis($dia);
+        }
+        $extraInformationController = new ExtraInformationController();
+        $extra_information = $patientCard["extra-information"];
+        foreach ($extra_information as $information) {
+            $information["patient_Id"]=$Data["id"];
+            $extraInformationController->storeExtraInformation($information);
+        }
+        return $Data ;
     }
 
 
@@ -33,6 +70,9 @@ class PatientCardController extends Controller
         $Data = PatientCard::find($id);
         if (is_null($Data))
             return response()->json(["message"=>"404 Not Found"], 404);
+        $Data->diagnosis;
+        $Data->extraInformation;
+        $Data->PatientFileTransferRequest;
         return response()->json(["Data:"=>$Data], 200);
     }
 

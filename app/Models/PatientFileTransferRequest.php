@@ -22,8 +22,8 @@ class PatientFileTransferRequest extends Model
         return $this->hasOne(PatientCard::Class,'id');
     }
 
-    public function reciverClinics(){
-        return $this->hasMany(ReceiverClinic::Class,'receiver_clinic');
+    public function receiverClinics(){
+        return $this->hasMany(ReceiverClinic::Class);
     }
 
 }

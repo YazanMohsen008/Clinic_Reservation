@@ -54,6 +54,16 @@ class ClinicController extends Controller
         $Data->reservations;
         return response()->json(["ClinicInfo" => $Data], 200);
     }
+    public function searchByName($name)
+    {
+        $clinic = Clinic::where('name' ,'like', $name."%")->get()->first();
+        if (is_null($clinic))
+            return response()->json(["message" => "404 Not Found"], 404);
+        $clinic->specialization;
+        $clinic->phoneNumber;
+        $clinic->reservations;
+        return response()->json(["ClinicInfo" => $clinic], 200);
+    }
 
 
     public function update(Request $request, $id)

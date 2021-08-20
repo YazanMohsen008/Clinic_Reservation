@@ -28,6 +28,11 @@ class MedicineController extends Controller
     }
 
 
+    public function storeMedicine(array $medicine)
+    {
+        $Data = Medicine::create($medicine);
+        return response()->json($Data,201);
+    }
     public function show($id)
     {
         $Data = Medicine::find($id);

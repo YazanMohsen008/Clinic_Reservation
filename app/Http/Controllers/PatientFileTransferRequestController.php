@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PatientCard;
 use App\Models\PatientFileTransferRequest;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -24,6 +25,22 @@ class PatientFileTransferRequestController extends Controller
         if($validator->fails())
             return response()->json($validator->errors(),400);
         $Data = PatientFileTransferRequest::create($request->all());
+
+        $patientCardController=new PatientCardController;
+        $patientCard=$patientCardController->storePatientCard($request->input("patient_card"));
+        $Data["patient_Id"]=$patientCard["id"];
+
+        $receiverClinicController = new ReceiverClinicController();
+
+        $receiverClinics = $request["receiver_clinics"];
+
+        foreach ($receiverClinics as $receiverClinicID) {
+            $receiverClinic["patient_file_transfer_request_id"]=$Data["id"];
+            $receiverClinic["receiver_clinic_id"]=$receiverClinicID;
+            $receiverClinic["date"]=$Data["date"];
+            $receiverClinicController->storeClinic($receiverClinic);
+        }
+        $Data->save();
         return response()->json($Data, 201);
     }
 
@@ -33,8 +50,15 @@ class PatientFileTransferRequestController extends Controller
         $Data = PatientFileTransferRequest::find($id);
         if (is_null($Data))
             return response()->json(["message"=>"404 Not Found"], 404);
+        $Data->receiverClinics;
         $Data->clinic;
-        $Data->PatientCard;
+        $patientCard=$Data->PatientCard;
+        $patientCard->extraInformation;
+        $diagnosis=$patientCard->diagnosis;
+        for($i=0;$i<sizeof($diagnosis);$i++) {
+            $diagnosis[$i]->medicines;
+            $diagnosis[$i]->attachments;
+        }
         return response()->json(["Data:"=>$Data], 200);
     }
 

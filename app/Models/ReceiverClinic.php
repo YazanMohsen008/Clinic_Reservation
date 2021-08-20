@@ -8,17 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class ReceiverClinic extends Model
 {
     use HasFactory;
-    protected $table='reservation_requests';
+    protected $table='receiver_clinics';
     protected $fillable = [
-        "patient_file_transfer_request",
-        "receiver_clinic",
+        "patient_file_transfer_request_id",
+        "receiver_clinic_id",
         "date",
     ];
     public function receiver_clinic(){
-        return $this->belongsTo(Clinic::Class,'clinic_Id');
+        return $this->belongsTo(Clinic::Class,'receiver_clinic_id');
     }
     public function patient_file_transfer_request(){
-        return $this->belongsTo(PatientFileTransferRequest::Class,'patient_Id');
+        return $this->belongsTo(PatientFileTransferRequest::Class,'patient_file_transfer_request_id');
     }
 
 }

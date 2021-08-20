@@ -27,7 +27,11 @@ class AttachmentController extends Controller
         return response()->json($Data, 201);
     }
 
-
+    public function storeAttachment(array $attachment)
+    {
+        $Data = Attachment::create($attachment);
+        return response()->json($Data,201);
+    }
     public function show($id)
     {
         $Data = Attachment::find($id);

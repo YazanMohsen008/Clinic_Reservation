@@ -18,5 +18,8 @@ class Patient extends Model
     public function reservationRequests(){
         return $this->hasMany(ReservationRequest::Class,'patient_Id');
     }
+    public function consultations(){
+        return $this->hasMany(Consultation::Class,'patient_Id');
+    }
 
 }

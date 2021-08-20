@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patient;
+use App\Models\ReservationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -36,7 +37,20 @@ class PatientController extends Controller
         $Data->reservationRequests;
         return response()->json(["Data:"=>$Data], 200);
     }
-
+    public function showPatientReservations($id)
+    {
+        $Data = Patient::find($id);
+        if (is_null($Data))
+            return response()->json(["message"=>"404 Not Found"], 404);
+        return response()->json(["Data:"=>$Data->reservationRequests], 200);
+    }
+    public function showPatientConsultations($id)
+    {
+        $Data = Patient::find($id);
+        if (is_null($Data))
+            return response()->json(["message"=>"404 Not Found"], 404);
+        return response()->json(["Data:"=>$Data->consultations], 200);
+    }
     public function update(Request $request, $id)
     {
         $Data = Patient::find($id);

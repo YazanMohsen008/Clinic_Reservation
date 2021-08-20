@@ -22,7 +22,7 @@ class CreateExtraInformationTable extends Migration
         });
         Schema::table('extra_information', function($table)
         {
-            $table->foreign('patient_Id')->references('id')->on('patient')->onDelete('cascade');
+            $table->foreign('patient_Id')->references('id')->on('patient_card')->onDelete('cascade');
         });
     }
 

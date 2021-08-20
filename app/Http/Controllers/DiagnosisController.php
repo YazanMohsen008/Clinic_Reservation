@@ -29,6 +29,23 @@ class DiagnosisController extends Controller
         return response()->json($Data, 201);
     }
 
+    public function storeDiagnosis(array $diagnosis)
+    {
+        $Data = Diagnosis::create($diagnosis);
+        $medicineController = new MedicineController();
+        $medicines = $diagnosis["medicines"];
+        foreach ($medicines as $medicine) {
+            $medicine["diagnosis_Id"]=$Data["id"];
+            $medicineController->storeMedicine( $medicine);
+        }
+        $attachmentController = new AttachmentController();
+        $attachments = $diagnosis["attachments"];
+        foreach ($attachments as $attachment) {
+            $attachment["diagnosis_Id"]=$Data["id"];
+            $attachmentController->storeAttachment($attachment);
+        }
+    }
+
 
     public function show($id)
     {
@@ -36,6 +53,8 @@ class DiagnosisController extends Controller
         if (is_null($Data))
             return response()->json(["message"=>"404 Not Found"], 404);
         $Data->patient;
+        $Data->medicines;
+        $Data->attachments;
         return response()->json(["Data:"=>$Data], 200);
     }
 

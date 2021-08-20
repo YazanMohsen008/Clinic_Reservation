@@ -23,9 +23,12 @@ class PatientCard extends Model
         "transfer_method",
     ];
     public function PatientFileTransferRequest(){
-        return $this->hasOne(PatientFileTransferRequest::Class,'patient_Id');
+        return $this->belongsTo(PatientFileTransferRequest::Class,'id');
     }
     public function diagnosis(){
-        return $this->hasMany(Diagnosis::Class,'diagnosis_Id');
+        return $this->hasMany(Diagnosis::Class,'patient_Id');
+    }
+    public function extraInformation(){
+        return $this->hasMany(ExtraInformation::Class,'patient_Id');
     }
 }

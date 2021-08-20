@@ -17,7 +17,7 @@ class CreateConsultationsTable extends Migration
             $table->id();
             $table->bigInteger('patient_Id')->unsigned();
             $table->bigInteger('response_clinic_id')->unsigned()->nullable();
-            $table->string('clinic_specialization');
+            $table->bigInteger('clinic_specialization')->unsigned();
             $table->string('header');
             $table->string('content');
             $table->date('date');
@@ -28,6 +28,7 @@ class CreateConsultationsTable extends Migration
         {
             $table->foreign('patient_Id')->references('id')->on('patient')->onDelete('cascade');
             $table->foreign('response_clinic_id')->references('id')->on('clinics')->onDelete('cascade');
+            $table->foreign('clinic_specialization')->references('id')->on('specialization')->onDelete('cascade');
         });
 
     }
