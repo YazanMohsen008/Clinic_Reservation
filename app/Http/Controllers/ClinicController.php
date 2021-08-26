@@ -78,7 +78,7 @@ class ClinicController extends Controller
         $Data->specialization;
         $Data->phoneNumber;
         $Data->reservations;
-        return response()->json(["ClinicInfo" => $Data], 200);
+        return response()->json($Data, 200);
     }
     public function searchByName($name)
     {

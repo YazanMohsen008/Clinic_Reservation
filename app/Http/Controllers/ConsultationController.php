@@ -36,7 +36,7 @@ class ConsultationController extends Controller
             return response()->json(["message"=>"404 Not Found"], 404);
         $Data->clinic;
         $Data->patient;
-        return response()->json(["Data:"=>$Data], 200);
+        return response()->json($Data, 200);
     }
     public function showSpecializationConsultations($specialization_id)
     {

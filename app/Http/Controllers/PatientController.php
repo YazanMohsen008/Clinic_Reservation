@@ -59,21 +59,21 @@ class PatientController extends Controller
         if (is_null($Data))
             return response()->json(["message"=>"404 Not Found"], 404);
         $Data->reservationRequests;
-        return response()->json(["Data:"=>$Data], 200);
+        return response()->json($Data, 200);
     }
     public function showPatientReservations($id)
     {
         $Data = Patient::find($id);
         if (is_null($Data))
             return response()->json(["message"=>"404 Not Found"], 404);
-        return response()->json(["Data:"=>$Data->reservationRequests], 200);
+        return response()->json($Data->reservationRequests, 200);
     }
     public function showPatientConsultations($id)
     {
         $Data = Patient::find($id);
         if (is_null($Data))
             return response()->json(["message"=>"404 Not Found"], 404);
-        return response()->json(["Data:"=>$Data->consultations], 200);
+        return response()->json($Data->consultations, 200);
     }
     public function update(Request $request, $id)
     {

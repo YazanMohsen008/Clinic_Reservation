@@ -59,7 +59,7 @@ class ReceiverClinicController extends Controller
         }
         if (is_null($request))
             return response()->json(["message" => "404 Not Found"], 404);
-        return response()->json(["Data:" => $request], 200);
+        return response()->json($request, 200);
     }
 
     public function update(Request $request, $id)
