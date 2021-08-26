@@ -42,10 +42,27 @@ return [
         ],
 
         'api' => [
-            'driver' => 'token',
-            'provider' => 'users',
+            'driver' => 'session',
+            'provider' =>'users',
             'hash' => false,
         ],
+
+        'system_admin' => [
+            'driver' => 'session',
+            'provider' =>'users',
+            'hash' => true,
+        ],
+        'patient' => [
+            'driver' => 'session',
+            'provider' =>'patient',
+            'hash' => true,
+        ],
+        'clinic' => [
+            'driver' => 'session',
+            'provider' =>'clinic',
+            'hash' => true,
+        ],
+
     ],
 
     /*
@@ -70,6 +87,14 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
+        'patient' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Patient::class,
+        ],
+        'clinic' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Clinic::class,
+        ]
 
         // 'users' => [
         //     'driver' => 'database',

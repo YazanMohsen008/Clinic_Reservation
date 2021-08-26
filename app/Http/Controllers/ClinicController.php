@@ -7,6 +7,8 @@ use App\Models\PhoneNumber;
 use App\Models\Specialization;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class ClinicController extends Controller
@@ -25,7 +27,7 @@ class ClinicController extends Controller
 
         if ($validator->fails())
             return response()->json($validator->errors(), 400);
-
+        $request["password"]=Hash::make($request["password"]);
 
         //phone Number Storing
         $phoneNumberController = new PhoneNumberController;
@@ -44,6 +46,30 @@ class ClinicController extends Controller
         return response()->json($Data, 201);
     }
 
+    public function login(Request $request)
+    {
+        $user = $request->only('email', 'password');
+
+        if (!Auth('clinic')->attempt($user)) {
+            return response()->json(["message"=>"Login Failed"], 401);
+        }
+        $user =Auth('clinic')->user() ;
+        $token = $user->createToken('token')->plainTextToken;
+//        $cookie=cookie('jwt',$token,60*24);
+        return response()->json(["message"=>"Success","user"=>$user,"token:"=>$token], 200);
+//        ->withCookie($cookie);
+    }
+
+    public function getUser(){
+        return response()->json(Auth('clinic')->user(), 200);
+    }
+    public function logout(){
+//        Cookie::forget('jwt');
+        auth('clinic')->user()->tokens()->delete();
+        return response()->json(["message"=>"Success"], 200);
+    }
+
+
     public function show($id)
     {
         $Data = Clinic::find($id);
@@ -56,13 +82,15 @@ class ClinicController extends Controller
     }
     public function searchByName($name)
     {
-        $clinic = Clinic::where('name' ,'like', $name."%")->get()->first();
-        if (is_null($clinic))
+        $clinics = Clinic::where('name' ,'like', "%".$name."%")->get();
+        if (is_null($clinics))
             return response()->json(["message" => "404 Not Found"], 404);
-        $clinic->specialization;
-        $clinic->phoneNumber;
-        $clinic->reservations;
-        return response()->json(["ClinicInfo" => $clinic], 200);
+        foreach ($clinics as $clinic) {
+            $clinic->specialization;
+            $clinic->phoneNumber;
+            $clinic->reservations;
+        }
+        return response()->json($clinics, 200);
     }
 
 

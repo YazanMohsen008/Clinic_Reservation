@@ -59,7 +59,7 @@ class PatientFileTransferRequestController extends Controller
             $diagnosis[$i]->medicines;
             $diagnosis[$i]->attachments;
         }
-        return response()->json(["Data:"=>$Data], 200);
+        return response()->json($Data, 200);
     }
 
     public function update(Request $request, $id)

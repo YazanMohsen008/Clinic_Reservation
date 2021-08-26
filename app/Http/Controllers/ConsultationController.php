@@ -44,7 +44,7 @@ class ConsultationController extends Controller
         $consultations = Consultation::where(['clinic_specialization' => $specialization_id,'response'=>null])->get();
         if (is_null($consultations))
             return response()->json(["message"=>"404 Not Found"], 404);
-        return response()->json(["Data:"=>$consultations], 200);
+        return response()->json($consultations, 200);
     }
 
     public function update(Request $request, $id)

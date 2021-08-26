@@ -55,7 +55,7 @@ class DiagnosisController extends Controller
         $Data->patient;
         $Data->medicines;
         $Data->attachments;
-        return response()->json(["Data:"=>$Data], 200);
+        return response()->json($Data, 200);
     }
 
     public function update(Request $request, $id)

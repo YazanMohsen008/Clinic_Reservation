@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patient;
-use App\Models\ReservationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class PatientController extends Controller
@@ -24,10 +25,33 @@ class PatientController extends Controller
         $validator=Validator::make($request->all(),$rules);
         if($validator->fails())
             return response()->json($validator->errors(),400);
+        $request["password"]=Hash::make($request["password"]);
         $Data = Patient::create($request->all());
         return response()->json($Data, 201);
     }
 
+    public function login(Request $request)
+    {
+        $user = $request->only('email', 'password');
+
+        if (!Auth('patient')->attempt($user)) {
+            return response()->json(["message"=>"Login Failed"], 401);
+        }
+        $user =Auth('patient')->user() ;
+        $token = $user->createToken('token')->plainTextToken;
+//        $cookie=cookie('jwt',$token,60*24);
+        return response()->json(["message"=>"Success","token:"=>$token], 200);
+//        ->withCookie($cookie);
+    }
+
+    public function getUser(){
+        return Auth('patient')->user();
+    }
+    public function logout(){
+//        Cookie::forget('jwt');
+        auth('patient')->user()->tokens()->delete();
+        return response()->json(["message"=>"Success"], 200);
+    }
 
     public function show($id)
     {

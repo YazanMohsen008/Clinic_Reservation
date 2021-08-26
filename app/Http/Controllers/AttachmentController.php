@@ -38,7 +38,7 @@ class AttachmentController extends Controller
         if (is_null($Data))
             return response()->json(["message"=>"404 Not Found"], 404);
         $Data->diagnosis;
-        return response()->json(["Data:"=>$Data], 200);
+        return response()->json($Data, 200);
     }
 
     public function update(Request $request, $id)

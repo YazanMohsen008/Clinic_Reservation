@@ -33,7 +33,7 @@ class ReservationRequestController extends Controller
             return response()->json(["message" => "404 Not Found"], 404);
         $Data->clinic;
         $Data->patient;
-        return response()->json(["Reservation Request" => $Data], 200);
+        return response()->json($Data, 200);
     }
 
 

@@ -42,7 +42,7 @@ class PhoneNumberController extends Controller
         if (is_null($Data))
             return response()->json(["message"=>"404 Not Found"], 404);
         $Data->clinic;
-        return response()->json(["PhoneNumber"=>$Data], 200);
+        return response()->json($Data, 200);
     }
 
     public function storePhoneNumber(array $phoneNumber)

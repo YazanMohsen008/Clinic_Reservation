@@ -41,7 +41,7 @@ class ReceiverClinicController extends Controller
             return response()->json(["message" => "404 Not Found"], 404);
         $Data->receiver_clinic;
         $Data->patient_file_transfer_request;
-        return response()->json(["Data:" => $Data], 200);
+        return response()->json($Data, 200);
     }
 
     public function showClinicTransferRequests( $clinic_id)
