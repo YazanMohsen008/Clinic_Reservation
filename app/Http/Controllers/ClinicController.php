@@ -80,6 +80,27 @@ class ClinicController extends Controller
         $Data->reservations;
         return response()->json($Data, 200);
     }
+    public function MyReservations($id)
+    {
+        $Data = Clinic::find($id);
+        if (is_null($Data))
+            return response()->json(["message" => "404 Not Found"], 404);
+        $reservations = $Data->reservations;
+        for($i=0;$i<sizeof($reservations);$i++){
+            $reservation=$reservations[$i];
+            if($reservation["status"]=="pending") {
+                $info["reservation_id"]=$reservation["id"];
+                $info["reservation_date"]=$reservation["reservation_date"];
+                $info["request_type"]=$reservation["request_type"];
+                $patient=$reservation->patient;
+                $info["patient_name"]=$patient["full_name"];
+                $info["patient_phone_number"]=$patient["phone_number"];
+                $pendingReservations[$i] = $reservation;
+            }
+        }
+
+        return response()->json($info, 200);
+    }
     public function searchByName($name)
     {
         $clinics = Clinic::where('name' ,'like', "%".$name."%")->get();

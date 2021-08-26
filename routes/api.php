@@ -63,6 +63,7 @@ Route::apiResource('attachments',"App\Http\Controllers\AttachmentController");
     Route::get('specialization_consultations/{id}', [ConsultationController::class, 'showSpecializationConsultations']);
     //get
     Route::get('clinic-search/{name}', [ClinicController::class, 'searchByName']);
+    Route::get('clinic-reservations/{id}', [ClinicController::class, 'MyReservations']);
     //get
     Route::get('receiver_clinic-requests/{id}', [ReceiverClinicController::class, 'showClinicTransferRequests']);
     Route::apiResource('patient_file_transfer_request', "App\Http\Controllers\PatientFileTransferRequestController");

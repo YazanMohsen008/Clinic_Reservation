@@ -67,6 +67,7 @@ class DatabaseSeeder extends Seeder
             'patient_Id' => 1
             , 'clinic_Id' => 1
             , 'reservation_date' => "2013-02-03"
+            , 'status' => "pending"
         ]);
 
         //This Data are for Transferring Requests
