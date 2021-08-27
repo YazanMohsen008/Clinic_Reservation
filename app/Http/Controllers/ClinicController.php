@@ -86,16 +86,19 @@ class ClinicController extends Controller
         if (is_null($Data))
             return response()->json(["message" => "404 Not Found"], 404);
         $reservations = $Data->reservations;
+        $counter=0;
         for($i=0;$i<sizeof($reservations);$i++){
             $reservation=$reservations[$i];
+
             if($reservation["status"]=="pending") {
-                $info["reservation_id"]=$reservation["id"];
-                $info["reservation_date"]=$reservation["reservation_date"];
-                $info["request_type"]=$reservation["request_type"];
+                $info[$counter]["reservation_id"]=$reservation["id"];
+                $info[$counter]["reservation_date"]=$reservation["reservation_date"];
+                $info[$counter]["request_type"]=$reservation["request_type"];
                 $patient=$reservation->patient;
-                $info["patient_name"]=$patient["full_name"];
-                $info["patient_phone_number"]=$patient["phone_number"];
+                $info[$counter]["patient_name"]=$patient["full_name"];
+                $info[$counter]["patient_phone_number"]=$patient["phone_number"];
                 $pendingReservations[$i] = $reservation;
+                $counter++;
             }
         }
 
