@@ -26,6 +26,15 @@ class SpecializationController extends Controller
         $Data = Specialization::create($request->all());
         return response()->json($Data, 201);
     }
+    public function storeSpecialization(String $specialization)
+    {
+        $sp = Specialization::where("english-name",$specialization)->get()->first();
+        if(is_null($sp)) {
+            $Data = Specialization::create(["english-name"=>$specialization,"arabic-name"=>$specialization]);
+            return $Data["id"];
+        }
+        return $sp["id"];
+    }
 
 
     public function show($id)

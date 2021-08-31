@@ -31,16 +31,9 @@ class PatientController extends Controller
         if($validator->fails())
             return response()->json($validator->errors(),400);
         $request["password"]=Hash::make($request["password"]);
-        $Data = Patient::create($request->all());
-        $user['email'] = $Data['email'];
-        $user['password'] = $Data['password'];
+        $user=Patient::create($request->all());
 
-        if (!Auth('patient')->attempt($user)) {
-            return response()->json(["message"=>"Login Failed"], 401);
-        }
-        $user =Auth('patient')->user();
-        $token = $user->createToken('token')->plainTextToken;
-        return response()->json(["message"=>"Success","token"=>$token,"user"=>$user], 201);
+        return response()->json(["message"=>"Success","user"=>$user], 200);
     }
 
     public function login(Request $request)
@@ -90,7 +83,7 @@ class PatientController extends Controller
 		$responses[$i]["reservation_time"]=$reservationRequest["reservation_time"];
 		$clinic=$reservationRequest->clinic;
 		$responses[$i]["clinic_id"]=$clinic["id"];
-		$responses[$i]["reservation_time"]=$clinic["doctor_name"];	   
+		$responses[$i]["doctor_name"]=$clinic["doctor_name"];
 	}
 
         return response()->json($responses, 200);

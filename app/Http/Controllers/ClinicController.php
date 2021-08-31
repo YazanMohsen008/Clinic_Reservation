@@ -33,6 +33,8 @@ class ClinicController extends Controller
         if ($validator->fails())
             return response()->json($validator->errors(), 400);
         $request["password"]=Hash::make($request["password"]);
+        $specializationController=new SpecializationController();
+        $request["specializationId"]=$specializationController->storeSpecialization($request["specialization"]);
 
         //phone Number Storing
         $phoneNumberController = new PhoneNumberController;
