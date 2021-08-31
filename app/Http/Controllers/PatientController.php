@@ -79,10 +79,21 @@ class PatientController extends Controller
         $Data = Patient::find($id);
         if (is_null($Data))
             return response()->json(["message"=>"404 Not Found"], 404);
+
         $reservationRequests=$Data->reservationRequests;
+	$i=0;
         foreach ($reservationRequests as $reservationRequest)
-            $reservationRequest->clinic;
-        return response()->json($Data, 200);
+            {
+		$responses[$i]["reservation_id"]=$reservationRequest["id"];
+		$responses[$i]["reservation_date"]=$reservationRequest["reservation_date"];
+		$responses[$i]["reservation_status"]=$reservationRequest["reservation_status"];
+		$responses[$i]["reservation_time"]=$reservationRequest["reservation_time"];
+		$clinic=$reservationRequest->clinic;
+		$responses[$i]["clinic_id"]=$clinic["id"];
+		$responses[$i]["reservation_time"]=$clinic["doctor_name"];	   
+	}
+
+        return response()->json($responses, 200);
     }
     public function showPatientConsultations()
     {

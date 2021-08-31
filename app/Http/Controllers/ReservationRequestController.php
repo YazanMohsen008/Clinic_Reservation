@@ -47,9 +47,9 @@ class ReservationRequestController extends Controller
         $reservation->update($request->all());
         if ($reservation['request_type'] == "reserve") {
             if (is_null($request->input("reservation_time")))
-                $reservation->update(["status" => "notOk"]);
+                $reservation->update(["status" => "reject"]);
             else
-                $reservation->update(["status" => "Ok"]);
+                $reservation->update(["status" => "accept"]);
         }
         return response()->json($reservation, 200);
     }

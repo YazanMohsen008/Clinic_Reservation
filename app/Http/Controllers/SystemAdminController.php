@@ -18,9 +18,7 @@ class SystemAdminController extends Controller
     public function store(Request $request)
     {
         return User::create([
-                'name' => $request->input('name'),
                 'email' => $request->input('email'),
-                'phone_number' => $request->input('phone_number'),
                 'password' => Hash::make($request->input('password'))]
         );
     }
