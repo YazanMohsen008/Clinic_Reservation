@@ -80,12 +80,12 @@ class DatabaseSeeder extends Seeder
             , 'address' => "5A00C"
             , 'phone_number' => "0978845123"
             , 'children_count' => 0
-            , 'material_status' => "dasdas"
-            , 'jop' => "Teacher"
-            , 'transfer_method' => "Alone"
+            , 'marital_status' => "dasdas"
+            , 'job' => "Teacher"
+            , 'from_clinic' => "Alone"
         ]);
-        DB::table('diagnosis')->insert([
-            'patient_Id' => 1  //patient card
+        DB::table('diagnoses')->insert([
+              'patient_card_id' => 1  //patient card
             , 'disease' => "Hunger"
             , 'disease_story' => "SDada"
             , 'family_story' => "dasdsa"
@@ -97,15 +97,21 @@ class DatabaseSeeder extends Seeder
             , 'name' => 1
             , 'type' => 1
             , 'file_format' => "2013-02-03"
-            , 'file' => "0000"
+            , 'file_path' => "0000"
             , 'date' => "2020-01-10"
         ]);
-        DB::table('medicines')->insert([
+        DB::table('prescriptions')->insert([
             'diagnosis_Id' => 1
-            , 'name' => 1
-            , 'titer' => 1400
             , 'date' => "2020-01-10"
         ]);
+         DB::table('medicines')->insert([
+                'prescription_Id' => 1
+                , 'name' => 1
+                , 'titer' => 1400
+                , 'frequency' => 1400
+                , 'quantity' => 14
+                , 'note' => "note"
+            ]);
 
         DB::table('patient_file_transfer_requests')->insert([
             'sender_clinic_id' =>1 ,

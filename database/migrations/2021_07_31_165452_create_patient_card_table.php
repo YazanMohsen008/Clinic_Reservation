@@ -18,14 +18,14 @@ class CreatePatientCardTable extends Migration
             $table->string('name');
             $table->string('father_name');
             $table->string('mother_name');
-            $table->string('birthdate');
+            $table->date('birthdate');
             $table->string('gender');
-            $table->string('address');
-            $table->string('phone_number');
-            $table->string('material_status');
+            $table->string('address')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->string('marital_status');
             $table->integer('children_count');
-            $table->string('jop');
-            $table->string('transfer_method');
+            $table->string('job')->nullable();
+            $table->string('from_clinic')->nullable();
             $table->timestamps();
         });
     }

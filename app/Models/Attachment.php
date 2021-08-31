@@ -14,7 +14,7 @@ class Attachment extends Model
         "name",
         "type",
         "file_format",
-        "file",
+        "file_path",
         "date"
     ];
     public function diagnosis(){

@@ -3,14 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patient;
+use http\Client\Curl\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Sanctum\Sanctum;
 
 class PatientController extends Controller
 {
+
+
+
     public function index()
     {
         return response()->json(Patient::get(), 200);
@@ -37,19 +42,18 @@ class PatientController extends Controller
         if (!Auth('patient')->attempt($user)) {
             return response()->json(["message"=>"Login Failed"], 401);
         }
-        $user =Auth('patient')->user() ;
+        $user =Auth('patient')->user();
         $token = $user->createToken('token')->plainTextToken;
-//        $cookie=cookie('jwt',$token,60*24);
-        return response()->json(["message"=>"Success","token:"=>$token], 200);
-//        ->withCookie($cookie);
+        return response()->json(["message"=>"Success","token:"=>$token,"user:"=>$user], 200);
     }
 
+
     public function getUser(){
-        return Auth('patient')->user();
+
+        return $this->show(Auth()->user()->getAuthIdentifier());
     }
     public function logout(){
-//        Cookie::forget('jwt');
-        auth('patient')->user()->tokens()->delete();
+        auth()->user()->tokens()->delete();
         return response()->json(["message"=>"Success"], 200);
     }
 
@@ -61,22 +65,25 @@ class PatientController extends Controller
         $Data->reservationRequests;
         return response()->json($Data, 200);
     }
-    public function showPatientReservations($id)
+    public function showPatientReservations()
     {
+        $id=Auth::user()->getAuthIdentifier();
         $Data = Patient::find($id);
         if (is_null($Data))
             return response()->json(["message"=>"404 Not Found"], 404);
         return response()->json($Data->reservationRequests, 200);
     }
-    public function showPatientConsultations($id)
+    public function showPatientConsultations()
     {
+        $id=Auth::user()->getAuthIdentifier();
         $Data = Patient::find($id);
         if (is_null($Data))
             return response()->json(["message"=>"404 Not Found"], 404);
         return response()->json($Data->consultations, 200);
     }
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
+        $id=Auth::user()->getAuthIdentifier();
         $Data = Patient::find($id);
         if (is_null($Data))
             return response()->json(["message"=>"404 Not Found"], 404);
@@ -84,8 +91,9 @@ class PatientController extends Controller
         return response()->json($Data, 200);
     }
 
-    public function destroy($id)
+    public function destroy()
     {
+        $id=Auth::user()->getAuthIdentifier();
         $Data = Patient::find($id);
         if (is_null($Data))
             return response()->json(["message"=>"404 Not Found"], 404);

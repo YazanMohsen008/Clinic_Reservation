@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ReceiverClinic;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ReceiverClinicController extends Controller
@@ -44,9 +45,22 @@ class ReceiverClinicController extends Controller
         return response()->json($Data, 200);
     }
 
-    public function showClinicTransferRequests( $clinic_id)
+    public function previewClinicTransferRequests( )
     {
-        //TODO $clinic_id is From logged in Clinic not Request
+        $clinic_id=Auth::user()->getAuthIdentifier();
+        $request = ReceiverClinic::where(['receiver_clinic_id' => $clinic_id])->get();
+        $patient_file_transfer_request=$request[0]->patient_file_transfer_request;
+        $patient_file_transfer_request->clinic;
+        $patientCard=$patient_file_transfer_request->PatientCard;
+        $patientCard->extraInformation;
+        if (is_null($request))
+            return response()->json(["message" => "404 Not Found"], 404);
+        return response()->json($request, 200);
+    }
+
+    public function downloadClinicTransferRequests( )
+    {
+        $clinic_id=Auth::user()->getAuthIdentifier();
         $request = ReceiverClinic::where(['receiver_clinic_id' => $clinic_id])->get();
         $patient_file_transfer_request=$request[0]->patient_file_transfer_request;
         $patient_file_transfer_request->clinic;
@@ -54,7 +68,10 @@ class ReceiverClinicController extends Controller
         $patientCard->extraInformation;
         $diagnosis=$patientCard->diagnosis;
         for($i=0;$i<sizeof($diagnosis);$i++) {
-            $diagnosis[$i]->medicines;
+            $prescriptions=$diagnosis[$i]->prescriptions;
+                foreach ($prescriptions as $prescriptions){
+                    $prescriptions->medicines;
+            }
             $diagnosis[$i]->attachments;
         }
         if (is_null($request))

@@ -2,91 +2,101 @@
 
 use App\Http\Controllers\ClinicController;
 use App\Http\Controllers\ConsultationController;
-use App\Http\Controllers\CountryController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ReceiverClinicController;
 use App\Http\Controllers\ReservationRequestController;
-use Illuminate\Http\Request;
-use App\Http\Controllers\FileController;
+use App\Http\Controllers\SpecializationController;
 use App\Http\Controllers\SystemAdminController;
+use App\Models\PatientFileTransferRequest;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-/*
-Route::get    ('countries', [CountryController::class, 'getCountries']);
-Route::get    ('countries/{id}', [CountryController::class, 'getCountry']);
-Route::post   ('country', [CountryController::class, 'storeCountry']);
-Route::put    ('country/{id}', [CountryController::class, 'updateCountry']);
-Route::DELETE ('country/{id}', [CountryController::class, 'deleteCountry']);
-Route::get        ('downloadFile', [FileController::class, 'Download']);
-Route::post       ('uploadFile', [FileController::class, 'Upload']);
-Route::post       ('register', [SystemAdminController::class, 'register']);
-Route::post       ('login   ', [SystemAdminController::class, 'login']);
+Route::post('system-admin', [SystemAdminController::class, 'store']);
+Route::get('system-admins', [SystemAdminController::class, 'index']);
+Route::post('system-admin-login', [SystemAdminController::class, 'login']);
 
-Route::middleware('auth:sanctum')->group(function (){
-    Route::get         ('user', [SystemAdminController::class, 'getUser']);
-    Route::post        ('logout',  [SystemAdminController::class, 'logout' ]);
+Route::get('clinic', [ClinicController::class, 'index']);
+Route::get('clinic/{id}', [ClinicController::class, 'show']);
+Route::get('clinic-search/{name}', [ClinicController::class, 'searchByName']);
+Route::post('clinic-login', [ClinicController::class, 'login']);
+
+Route::post('patient-login', [PatientController::class, 'login']);
+Route::post('patient', [PatientFileTransferRequest::class, 'store']);
+
+Route::middleware("auth:sanctum")->group(function () {
+
+
+    Route::middleware("is:system_admin")->group(function () {
+
+        Route::get('current-system-admin', [SystemAdminController::class, 'getUser']);
+        Route::post('system-admin-logout', [SystemAdminController::class, 'logout']);
+
+        //specialization
+        Route::post('specialization', [SpecializationController::class, 'store']);//system admin &
+
+        Route::get('specialization', [SpecializationController::class, 'index']);//system admin & clinic
+        Route::get('specialization/{id}', [SpecializationController::class, 'show']);//system admin & clinic
+        Route::put('specialization/{id}', [SpecializationController::class, 'update']);//system admin & clinic
+        Route::delete('specialization', [SpecializationController::class, 'destroy']);
+
+        // clinic
+        Route::post('clinic', [ClinicController::class, 'store']);
+        Route::put('clinic/{id}', [ClinicController::class, 'update']);//system admin & clinic
+        Route::delete('clinic', [ClinicController::class, 'destroy']);//system admin & clinic
+
+        Route::get('patient_file_transfer_request', [PatientFileTransferRequest::class, 'index']);
+
+    });
+
+
+    Route::middleware("is:clinic")->group(function () {
+        Route::get('current-clinic', [ClinicController::class, 'getUser']);
+        Route::Post('clinic-logout', [ClinicController::class, 'logout']);
+
+        //Consultation
+        Route::get('specialization_consultations', [ConsultationController::class, 'showSpecializationConsultations']);
+
+        //reservations
+        Route::get('clinic-reservations', [ClinicController::class, 'MyReservations']);
+
+        Route::get('preview-Transfer-patient', [ReceiverClinicController::class, 'previewClinicTransferRequests']);
+        Route::get('download-Transfer-patient', [ReceiverClinicController::class, 'downloadClinicTransferRequests']);
+
+        Route::post('patient_file_transfer_request', [PatientFileTransferRequest::class, 'store']);
+        Route::get('patient_file_transfer_request/{id}', [PatientFileTransferRequest::class, 'show']);
+
+        Route::put('reservation_requests/{id}', [ReservationRequestController::class, 'update']);
+
+
+        //TODO delete duplicate
+        Route::get('specialization', [SpecializationController::class, 'index']);//system admin & clinic
+        Route::get('specialization/{id}', [SpecializationController::class, 'show']);//system admin & clinic
+        Route::put('specialization/{id}', [SpecializationController::class, 'update']);//system admin & clinic
+        // clinic
+        Route::put('clinic/{id}', [ClinicController::class, 'update']);//system admin & clinic
+        Route::delete('clinic', [ClinicController::class, 'destroy']);//system admin & clinic
+
+    });
+
+
+    Route::middleware("is:patient")->group(function () {
+        Route::get('current-patient', [PatientController::class, 'getUser']);
+        Route::get('patient-logout', [PatientController::class, 'logout']);
+
+        //consultations
+        Route::post('consultation', [ConsultationController::class, 'store']);
+        Route::get('consultation', [ConsultationController::class, 'index']);
+        Route::get('patient-consultations', [PatientController::class, 'showPatientConsultations']);
+
+        //reservations
+        Route::post('reservation_requests', [ReservationRequestController::class, 'store']);
+        Route::get('patient-reservations', [PatientController::class, 'showPatientReservations']);
+        Route::delete('reservation-cancel', [ReservationRequestController::class, 'cancel']);
+
+        Route::put('patient', [PatientController::class, 'update']);
+        Route::delete('patient', [PatientController::class, 'destroy']);
+    });
+
 });
-Route::apiResource('receiver_clinics',"App\Http\Controllers\ReceiverClinicController");
-Route::apiResource('phoneNumber',"App\Http\Controllers\PhoneNumberController");
-Route::apiResource('patient_card',"App\Http\Controllers\PatientCardController");
-Route::apiResource('extra_information',"App\Http\Controllers\ExtraInformationController");
-Route::apiResource('diagnosis',"App\Http\Controllers\DiagnosisController");
-Route::apiResource('medicines',"App\Http\Controllers\MedicineController");
-Route::apiResource('attachments',"App\Http\Controllers\AttachmentController");
 
-*/
 
-//Role: system admin
-    //add ,delete,update
-    Route::post       ('register', [SystemAdminController::class, 'register']);
-    Route::post('system-admin-login', [SystemAdminController::class, 'login']);
-    Route::get('system-admin-logout', [SystemAdminController::class, 'logout']);
-    Route::apiResource('specialization', "App\Http\Controllers\SpecializationController");
-    Route::apiResource('clinic', "App\Http\Controllers\ClinicController");
-
-//clinic
-    //get
-    Route::get('specialization_consultations/{id}', [ConsultationController::class, 'showSpecializationConsultations']);
-    //get
-    Route::get('clinic-search/{name}', [ClinicController::class, 'searchByName']);
-    Route::get('clinic-reservations/{id}', [ClinicController::class, 'MyReservations']);
-    //get
-    Route::get('receiver_clinic-requests/{id}', [ReceiverClinicController::class, 'showClinicTransferRequests']);
-    Route::apiResource('patient_file_transfer_request', "App\Http\Controllers\PatientFileTransferRequestController");
-    Route::post('clinic-login', [ClinicController::class, 'login']);
-    Route::get('current-clinic', [ClinicController::class, 'getUser']);
-    Route::get('clinic-logout', [ClinicController::class, 'logout']);
-
-//patient
-    //add ,delete ,get ,update
-    Route::apiResource('patient', "App\Http\Controllers\PatientController");
-    Route::post('patient-login', [PatientController::class, 'login']);
-    Route::get('current-patient', [PatientController::class, 'getUser']);
-    Route::get('patient-logout', [PatientController::class, 'logout']);
-    //get
-    Route::get('patient-reservations/{id}', [PatientController::class, 'showPatientReservations']);
-    //get
-    Route::get('patient-consultations/{id}', [PatientController::class, 'showPatientConsultations']);
-    //add
-    //clinic:update
-    Route::apiResource('reservation_requests', "App\Http\Controllers\ReservationRequestController");
-    //delete
-    Route::delete('reservation-cancel', [ReservationRequestController::class, 'cancel']);
-    //add ,delete ,get
-    //clinic: update
-    //system admin :delete
-    Route::apiResource('consultation', "App\Http\Controllers\ConsultationController");

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ReservationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ReservationRequestController extends Controller
@@ -64,7 +65,7 @@ class ReservationRequestController extends Controller
     public function cancel(Request $request)
     {
         $clinic_id = $request->input('clinic_id');
-        $patient_id = $request->input('patient_id');
+        $patient_id = Auth::user()->getAuthIdentifier();
         $reservationRequest = ReservationRequest::where(['clinic_Id' => $clinic_id, 'patient_Id' => $patient_id])->get()->first();
         if (is_null($reservationRequest))
             return response()->json(["message" => "404 Not Found"], 404);

@@ -15,7 +15,12 @@ class ClinicController extends Controller
 {
     public function index()
     {
-        return response()->json(Clinic::get(), 200);
+        $clinics=Clinic::get();
+        foreach ($clinics as $clinic) {
+            $clinic->specialization;
+            $clinic->phoneNumber;
+        }
+        return response()->json($clinics, 200);
     }
 
     public function store(Request $request)
@@ -55,17 +60,15 @@ class ClinicController extends Controller
         }
         $user =Auth('clinic')->user() ;
         $token = $user->createToken('token')->plainTextToken;
-//        $cookie=cookie('jwt',$token,60*24);
         return response()->json(["message"=>"Success","user"=>$user,"token:"=>$token], 200);
-//        ->withCookie($cookie);
     }
 
+
     public function getUser(){
-        return response()->json(Auth('clinic')->user(), 200);
+        return $this->show(Auth::user()->getAuthIdentifier());
     }
     public function logout(){
-//        Cookie::forget('jwt');
-        auth('clinic')->user()->tokens()->delete();
+        auth()->user()->tokens()->delete();
         return response()->json(["message"=>"Success"], 200);
     }
 
@@ -77,11 +80,11 @@ class ClinicController extends Controller
             return response()->json(["message" => "404 Not Found"], 404);
         $Data->specialization;
         $Data->phoneNumber;
-        $Data->reservations;
         return response()->json($Data, 200);
     }
-    public function MyReservations($id)
+    public function MyReservations()
     {
+        $id=Auth::user()->getAuthIdentifier();
         $Data = Clinic::find($id);
         if (is_null($Data))
             return response()->json(["message" => "404 Not Found"], 404);
@@ -112,7 +115,6 @@ class ClinicController extends Controller
         foreach ($clinics as $clinic) {
             $clinic->specialization;
             $clinic->phoneNumber;
-            $clinic->reservations;
         }
         return response()->json($clinics, 200);
     }

@@ -21,7 +21,8 @@ class CreateClinicsTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->integer('working_hours');
-            $table->string('IP_address');
+            $table->string('IP_address')->nullable();
+            $table->rememberToken();
             $table->bigInteger('specializationId')->unsigned();
             $table->timestamps();
         });

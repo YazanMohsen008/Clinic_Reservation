@@ -13,17 +13,21 @@ class CreateMedicinesTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('medicines');
         Schema::create('medicines', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('diagnosis_Id')->unsigned();
+            $table->unsignedBigInteger('prescription_id');
             $table->string('name');
             $table->string('titer');
-            $table->date('date');
+            $table->string('frequency');
+            $table->integer('quantity');
+            $table->string('note');
             $table->timestamps();
-        });
-        Schema::table('medicines', function($table)
-        {
-            $table->foreign('diagnosis_Id')->references('id')->on('diagnosis')->onDelete('cascade');
+
+            $table->foreign('prescription_id')
+                ->references('id')
+                ->on('prescriptions')
+                ->onDelete('cascade');
         });
     }
 

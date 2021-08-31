@@ -10,7 +10,7 @@ class Diagnosis extends Model
     use HasFactory;
     protected $table='diagnosis';
     protected $fillable = [
-        "patient_Id",
+        "patient_card_id",
         "disease",
         "disease_story",
         "family_story",
@@ -19,11 +19,12 @@ class Diagnosis extends Model
     ];
 
     public function patient(){
-        return $this->belongsTo(PatientCard::Class,'patient_Id');
+        return $this->belongsTo(PatientCard::Class,'patient_card_id');
     }
-    public function medicines(){
-        return $this->hasMany(Medicine::Class,'diagnosis_Id');
+    public function prescription() {
+        return $this->hasMany(Prescription::class);
     }
+
     public function attachments(){
         return $this->hasMany(Attachment::Class,'diagnosis_Id');
     }

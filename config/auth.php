@@ -36,17 +36,16 @@ return [
     */
 
     'guards' => [
+
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' =>'users',
         ],
-
         'api' => [
-            'driver' => 'session',
+            'driver' => 'token',
             'provider' =>'users',
             'hash' => false,
         ],
-
         'system_admin' => [
             'driver' => 'session',
             'provider' =>'users',
@@ -83,7 +82,7 @@ return [
     */
 
     'providers' => [
-        'users' => [
+      'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
@@ -100,6 +99,20 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+
+    //    'guards' => [
+    //    'web' => [
+    //        'driver' => 'session',
+    //        'provider' => 'users',
+    //    ],
+    //
+    //    'api' => [
+    //        'driver' => 'token',
+    //        'provider' => 'users',
+    //        'hash' => false,
+    //    ],
+    //]
+
     ],
 
     /*

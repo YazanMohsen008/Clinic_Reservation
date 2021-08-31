@@ -3,6 +3,8 @@ php artisan migrate --path=database\migrations\2021_06_16_190333_create_speciali
 
 php artisan migrate --path=database\migrations\2021_07_31_165452_create_patient_card_table.php
 
+php artisan migrate --path=database\migrations\2021_07_31_171406_create_diagnoses_table.php
+
 php artisan migrate
 
 php artisan db:seed

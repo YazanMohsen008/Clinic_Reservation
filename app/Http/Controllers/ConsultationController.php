@@ -7,6 +7,7 @@ use App\Models\Patient;
 use App\Models\Specialization;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ConsultationController extends Controller
@@ -38,9 +39,9 @@ class ConsultationController extends Controller
         $Data->patient;
         return response()->json($Data, 200);
     }
-    public function showSpecializationConsultations($specialization_id)
+    public function showSpecializationConsultations()
     {
-        //TODO $specialization_id is From logged in Clinic not Request
+        $specialization_id=Auth::user()->getAuthIdentifier();
         $consultations = Consultation::where(['clinic_specialization' => $specialization_id,'response'=>null])->get();
         if (is_null($consultations))
             return response()->json(["message"=>"404 Not Found"], 404);

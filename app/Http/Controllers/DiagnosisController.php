@@ -53,7 +53,7 @@ class DiagnosisController extends Controller
         if (is_null($Data))
             return response()->json(["message"=>"404 Not Found"], 404);
         $Data->patient;
-        $Data->medicines;
+        $Data->prescription;
         $Data->attachments;
         return response()->json($Data, 200);
     }

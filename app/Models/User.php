@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable,HasApiTokens;
+    protected $guard = 'system-admin';
 
     /**
      * The attributes that are mass assignable.

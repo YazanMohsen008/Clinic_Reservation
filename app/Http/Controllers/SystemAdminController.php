@@ -11,7 +11,11 @@ use Illuminate\Support\Facades\Hash;
 class SystemAdminController extends Controller
 {
 
-    public function register(Request $request)
+    public function index()
+    {
+        return response()->json(User::get(), 200);
+    }
+    public function store(Request $request)
     {
         return User::create([
                 'name' => $request->input('name'),
@@ -32,17 +36,14 @@ class SystemAdminController extends Controller
         $user =Auth('system_admin')->user();
 
         $token = $user->createToken('token')->plainTextToken;
-//        $cookie=cookie('jwt',$token,60*24);
         return response()->json(["message"=>"Success","token:"=>$token], 200);
-//        ->withCookie($cookie);
     }
 
     public function getUser(){
-    return Auth('system_admin')->user();
+    return User::find(Auth()->user()->getAuthIdentifier());
     }
     public function logout(){
-//        Cookie::forget('jwt');
-        auth('system_admin')->user()->tokens()->delete();
+        auth()->user()->tokens()->delete();
      return response()->json(["message"=>"Success"], 200);
     }
 

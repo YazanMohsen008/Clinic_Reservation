@@ -15,18 +15,20 @@ class CreateAttachmentsTable extends Migration
     {
         Schema::create('attachments', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('diagnosis_Id')->unsigned();
+            $table->unsignedBigInteger('diagnosis_id');
             $table->string('name');
             $table->string('type');
             $table->string('file_format');
-            $table->string('file');
+            $table->string('file_path');
             $table->date('date');
             $table->timestamps();
+
+            $table->foreign('diagnosis_id')
+                ->references('id')
+                ->on('diagnoses')
+                ->onDelete('cascade');
         });
-        Schema::table('attachments', function($table)
-        {
-            $table->foreign('diagnosis_Id')->references('id')->on('diagnosis')->onDelete('cascade');
-        });
+
     }
 
     /**

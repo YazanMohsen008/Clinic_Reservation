@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use App\Http\Controllers\ReservationRequestController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -12,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 class Clinic extends Authenticatable
 {
     use HasFactory, Notifiable,HasApiTokens;
+    protected $guard = 'clinic';
 
     protected $table='clinics';
     protected $fillable = [

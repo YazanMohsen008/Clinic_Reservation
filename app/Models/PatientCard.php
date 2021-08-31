@@ -17,10 +17,10 @@ class PatientCard extends Model
         "gender",
         "address",
         "phone_number",
-        "material_status",
+        "marital_status",
         "children_count",
-        "jop",
-        "transfer_method",
+        "job",
+        "from_clinic",
     ];
     public function PatientFileTransferRequest(){
         return $this->belongsTo(PatientFileTransferRequest::Class,'id');

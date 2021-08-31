@@ -56,7 +56,7 @@ class PatientFileTransferRequestController extends Controller
         $patientCard->extraInformation;
         $diagnosis=$patientCard->diagnosis;
         for($i=0;$i<sizeof($diagnosis);$i++) {
-            $diagnosis[$i]->medicines;
+            $diagnosis[$i]->prescription;
             $diagnosis[$i]->attachments;
         }
         return response()->json($Data, 200);

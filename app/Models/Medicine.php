@@ -10,13 +10,15 @@ class Medicine extends Model
     use HasFactory;
     protected $table='medicines';
     protected $fillable = [
-        "diagnosis_Id",
+        "prescription_id",
         "name",
         "titer",
-        "date"
+        "frequency",
+        "quantity",
+        "note"
         ];
-    public function diagnosis(){
-        return $this->belongsTo(Diagnosis::Class,'diagnosis_Id');
+    public function prescriptions(){
+        return $this->belongsTo(Prescription::Class,'prescription_id');
     }
 
 }

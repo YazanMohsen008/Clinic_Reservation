@@ -24,12 +24,15 @@ class AttachmentController extends Controller
         if($validator->fails())
             return response()->json($validator->errors(),400);
         $Data = Attachment::create($request->all());
+
         return response()->json($Data, 201);
     }
 
     public function storeAttachment(array $attachment)
     {
         $Data = Attachment::create($attachment);
+        $fileController=new FileController();
+        $fileController->upload($attachment);
         return response()->json($Data,201);
     }
     public function show($id)
@@ -38,6 +41,8 @@ class AttachmentController extends Controller
         if (is_null($Data))
             return response()->json(["message"=>"404 Not Found"], 404);
         $Data->diagnosis;
+        $fileController=new FileController();
+        $fileController->download($Data["file_path"]);
         return response()->json($Data, 200);
     }
 
