@@ -52,12 +52,14 @@ class DatabaseSeeder extends Seeder
         DB::table('patient')->insert([
             'full_name' => "Majed"
             , 'phone_number' => "092221124"
+            , 'age' => 20
             , 'email' => "Majed@gmail.com"
             , 'password' => "01"
         ]);
         DB::table('patient')->insert([
             'full_name' => "Akram"
             , 'phone_number' => "092121124"
+            , 'age' => 20
             , 'email' => "Akram@gmail.com"
             , 'password' => "01"
         ]);
@@ -85,7 +87,7 @@ class DatabaseSeeder extends Seeder
             , 'from_clinic' => "Alone"
         ]);
         DB::table('diagnoses')->insert([
-              'patient_card_id' => 1  //patient card
+            'patient_card_id' => 1  //patient card
             , 'disease' => "Hunger"
             , 'disease_story' => "SDada"
             , 'family_story' => "dasdsa"
@@ -104,32 +106,33 @@ class DatabaseSeeder extends Seeder
             'diagnosis_Id' => 1
             , 'date' => "2020-01-10"
         ]);
-         DB::table('medicines')->insert([
-                'prescription_Id' => 1
-                , 'name' => 1
-                , 'titer' => 1400
-                , 'frequency' => 1400
-                , 'quantity' => 14
-                , 'note' => "note"
-            ]);
+        DB::table('medicines')->insert([
+            'prescription_Id' => 1
+            , 'name' => 1
+            , 'titer' => 1400
+            , 'frequency' => 1400
+            , 'quantity' => 14
+            , 'note' => "note"
+        ]);
 
         DB::table('patient_file_transfer_requests')->insert([
-            'sender_clinic_id' =>1 ,
-            'patient_Id' =>1,
-            'date'=>"2013-02-03"
+            'sender_clinic_id' => 1,
+            'patient_Id' => 1,
+            'date' => "2013-02-03"
         ]);
         DB::table('receiver_clinics')->insert([
-            'patient_file_transfer_request_id' =>1 ,
-            'receiver_clinic_id' =>2,
-            'date'=>"2013-02-03"
+            'patient_file_transfer_request_id' => 1,
+            'receiver_clinic_id' => 2,
+            'date' => "2013-02-03"
         ]);
 
         DB::table('consultations')->insert([
-            'patient_Id' =>1,
-            'clinic_specialization' =>1 ,
-            'header' =>"hhh" ,
-            'content' =>"ccc",
-            'date'=>"2013-02-03"
+            'patient_Id' => 1,
+            'clinic_specialization' => 1,
+            'header' => "hhh",
+            'content' => "ccc",
+            'age' => 20,
+            'date' => "2013-02-03"
         ]);
 
     }

@@ -71,7 +71,10 @@ class PatientController extends Controller
         $Data = Patient::find($id);
         if (is_null($Data))
             return response()->json(["message"=>"404 Not Found"], 404);
-        return response()->json($Data->reservationRequests, 200);
+        $reservationRequests=$Data->reservationRequests;
+        foreach ($reservationRequests as $reservationRequest)
+            $reservationRequest->clinic;
+        return response()->json($Data, 200);
     }
     public function showPatientConsultations()
     {
@@ -79,6 +82,10 @@ class PatientController extends Controller
         $Data = Patient::find($id);
         if (is_null($Data))
             return response()->json(["message"=>"404 Not Found"], 404);
+        $consultations=$Data->consultations;
+        foreach ($consultations as $consultation) {
+            $consultation->clinic;
+        }
         return response()->json($Data->consultations, 200);
     }
     public function update(Request $request)

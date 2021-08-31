@@ -17,14 +17,15 @@ class ReservationRequestController extends Controller
 
     public function store(Request $request)
     {
-            $rules = ['reservation_date' => 'required'];
-            $validator = Validator::make($request->all(), $rules);
-            if ($validator->fails())
-                return response()->json($validator->errors(), 400);
-            $reservation = ReservationRequest::create($request->all());
-            $reservation->update(["request_type" => "reserve"]);
-            $reservation->update(["status" => "pending"]);
-            return response()->json($reservation, 201);
+        $rules = ['reservation_date' => 'required'];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails())
+            return response()->json($validator->errors(), 400);
+        $request["patient_Id"] = Auth::user()->getAuthIdentifier();
+        $reservation = ReservationRequest::create($request->all());
+        $reservation->update(["request_type" => "reserve"]);
+        $reservation->update(["status" => "pending"]);
+        return response()->json($reservation, 201);
     }
 
     public function show($id)
@@ -44,7 +45,7 @@ class ReservationRequestController extends Controller
         if (is_null($reservation))
             return response()->json(["message" => "404 Not Found"], 404);
         $reservation->update($request->all());
-        if($reservation['request_type']=="reserve") {
+        if ($reservation['request_type'] == "reserve") {
             if (is_null($request->input("reservation_time")))
                 $reservation->update(["status" => "notOk"]);
             else

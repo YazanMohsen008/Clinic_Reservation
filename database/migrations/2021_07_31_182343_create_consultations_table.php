@@ -20,6 +20,7 @@ class CreateConsultationsTable extends Migration
             $table->bigInteger('clinic_specialization')->unsigned();
             $table->string('header');
             $table->string('content');
+            $table->integer('age');
             $table->date('date');
             $table->string('response')->nullable();
             $table->timestamps();

@@ -137,4 +137,23 @@ class ClinicController extends Controller
         $Data->delete();
         return response()->json(null, 204);
     }
+    public function updateCurrent(Request $request)
+    {
+        $id=Auth::user()->getAuthIdentifier();
+        $Data = Clinic::find($id);
+        if (is_null($Data))
+            return response()->json(["message" => "404 Not Found"], 404);
+        $Data->update($request->all());
+        return response()->json($Data, 200);
+    }
+
+    public function destroyCurrent()
+    {
+        $id=Auth::user()->getAuthIdentifier();
+        $Data = Clinic::find($id);
+        if (is_null($Data))
+            return response()->json(["message" => "404 Not Found"], 404);
+        $Data->delete();
+        return response()->json(null, 204);
+    }
 }

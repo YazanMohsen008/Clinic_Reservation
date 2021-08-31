@@ -15,6 +15,7 @@ class Consultation extends Model
         "clinic_specialization",
         "header",
         "content",
+        "age",
         "date",
         "response"
     ];

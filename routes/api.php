@@ -3,11 +3,11 @@
 use App\Http\Controllers\ClinicController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\PatientFileTransferRequestController;
 use App\Http\Controllers\ReceiverClinicController;
 use App\Http\Controllers\ReservationRequestController;
 use App\Http\Controllers\SpecializationController;
 use App\Http\Controllers\SystemAdminController;
-use App\Models\PatientFileTransferRequest;
 use Illuminate\Support\Facades\Route;
 
 
@@ -21,7 +21,9 @@ Route::get('clinic-search/{name}', [ClinicController::class, 'searchByName']);
 Route::post('clinic-login', [ClinicController::class, 'login']);
 
 Route::post('patient-login', [PatientController::class, 'login']);
-Route::post('patient', [PatientFileTransferRequest::class, 'store']);
+Route::post('patient', [PatientController::class, 'store']);
+
+Route::get('specializations', [SpecializationController::class, 'index']);
 
 Route::middleware("auth:sanctum")->group(function () {
 
@@ -34,17 +36,15 @@ Route::middleware("auth:sanctum")->group(function () {
         //specialization
         Route::post('specialization', [SpecializationController::class, 'store']);//system admin &
 
-        Route::get('specialization', [SpecializationController::class, 'index']);//system admin & clinic
-        Route::get('specialization/{id}', [SpecializationController::class, 'show']);//system admin & clinic
-        Route::put('specialization/{id}', [SpecializationController::class, 'update']);//system admin & clinic
+        Route::put('specialization/{id}', [SpecializationController::class, 'update']);
         Route::delete('specialization', [SpecializationController::class, 'destroy']);
 
         // clinic
         Route::post('clinic', [ClinicController::class, 'store']);
-        Route::put('clinic/{id}', [ClinicController::class, 'update']);//system admin & clinic
-        Route::delete('clinic', [ClinicController::class, 'destroy']);//system admin & clinic
+        Route::put('clinic/{id}', [ClinicController::class, 'update']);
+        Route::delete('clinic/{id}', [ClinicController::class, 'destroy']);
 
-        Route::get('patient_file_transfer_request', [PatientFileTransferRequest::class, 'index']);
+        Route::get('patient_file_transfer_request', [PatientFileTransferRequestController::class, 'index']);
 
     });
 
@@ -55,6 +55,7 @@ Route::middleware("auth:sanctum")->group(function () {
 
         //Consultation
         Route::get('specialization_consultations', [ConsultationController::class, 'showSpecializationConsultations']);
+        Route::put('consultation/{id}', [ConsultationController::class, 'update']);
 
         //reservations
         Route::get('clinic-reservations', [ClinicController::class, 'MyReservations']);
@@ -62,20 +63,14 @@ Route::middleware("auth:sanctum")->group(function () {
         Route::get('preview-Transfer-patient', [ReceiverClinicController::class, 'previewClinicTransferRequests']);
         Route::get('download-Transfer-patient', [ReceiverClinicController::class, 'downloadClinicTransferRequests']);
 
-        Route::post('patient_file_transfer_request', [PatientFileTransferRequest::class, 'store']);
-        Route::get('patient_file_transfer_request/{id}', [PatientFileTransferRequest::class, 'show']);
+        Route::post('patient_file_transfer_request', [PatientFileTransferRequestController::class, 'store']);
+        Route::get('patient_file_transfer_request/{id}', [PatientFileTransferRequestController::class, 'show']);
 
         Route::put('reservation_requests/{id}', [ReservationRequestController::class, 'update']);
 
-
-        //TODO delete duplicate
-        Route::get('specialization', [SpecializationController::class, 'index']);//system admin & clinic
-        Route::get('specialization/{id}', [SpecializationController::class, 'show']);//system admin & clinic
-        Route::put('specialization/{id}', [SpecializationController::class, 'update']);//system admin & clinic
         // clinic
-        Route::put('clinic/{id}', [ClinicController::class, 'update']);//system admin & clinic
-        Route::delete('clinic', [ClinicController::class, 'destroy']);//system admin & clinic
-
+        Route::put('current-clinic', [ClinicController::class, 'updateCurrent']);//system admin & clinic
+        Route::delete('current-clinic', [ClinicController::class, 'destroyCurrent']);//system admin & clinic
     });
 
 

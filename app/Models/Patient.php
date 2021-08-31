@@ -17,6 +17,7 @@ class Patient extends Authenticatable
         "full_name",
         "phone_number",
         "email",
+        "age",
         "password",
     ];
     public function reservationRequests(){

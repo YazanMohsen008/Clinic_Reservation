@@ -17,7 +17,7 @@ class CreateReservationRequestsTable extends Migration
             $table->id();
             $table->bigInteger('patient_Id')->unsigned();
             $table->bigInteger('clinic_Id')->unsigned();
-            $table->date("reservation_date");
+            $table->dateTime("reservation_date");
             $table->string('status')->nullable();
             $table->string('request_type')->nullable();
             $table->Time("reservation_time")->nullable();
