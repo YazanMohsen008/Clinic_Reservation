@@ -16,8 +16,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
-        DB::table('specialization')->insert(['name' => "Nose"]);
-        DB::table('specialization')->insert(['name' => "Mouth"]);
+        DB::table('specialization')->insert(["english-name" => "Nose",'arabic-name' => "الأنف"]);
+        DB::table('specialization')->insert(['english-name' => "Mouth",'arabic-name' => "الفم"]);
 
         DB::table('clinics')->insert([
             'name' => "YznClinic"
@@ -117,7 +117,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('patient_file_transfer_requests')->insert([
             'sender_clinic_id' => 1,
-            'patient_Id' => 1,
+            'patient_card_Id' => 1,
             'date' => "2013-02-03"
         ]);
         DB::table('receiver_clinics')->insert([

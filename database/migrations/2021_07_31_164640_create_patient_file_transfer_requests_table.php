@@ -16,14 +16,14 @@ class CreatePatientFileTransferRequestsTable extends Migration
         Schema::create('patient_file_transfer_requests', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('sender_clinic_id')->unsigned();
-            $table->bigInteger('patient_Id')->unsigned()->nullable();
+            $table->bigInteger('patient_card_Id')->unsigned()->nullable();
             $table->date('date');
             $table->timestamps();
         });
 
         Schema::table('patient_file_transfer_requests', function($table)
         {
-            $table->foreign('patient_Id')->references('id')->on('patient_card')->onDelete('cascade');
+            $table->foreign('patient_card_Id')->references('id')->on('patient_card')->onDelete('cascade');
             $table->foreign('sender_clinic_id')->references('id')->on('clinics')->onDelete('cascade');
         });
     }

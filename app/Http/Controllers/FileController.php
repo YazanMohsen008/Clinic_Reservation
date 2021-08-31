@@ -18,7 +18,7 @@ class FileController extends Controller
     }
 
     public function Upload (array $request){
-        $fileName='file'.$request['name'].'.'.$request['file_type'];
+        $fileName='file'.$request['name'].'.'.$request['type'];
 //        $request->file('file')->move(public_path("/"),$fileName);
         $file_url=url('/',$fileName);
         return $file_url;

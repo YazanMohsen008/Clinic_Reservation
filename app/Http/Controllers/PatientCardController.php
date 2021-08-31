@@ -50,15 +50,15 @@ class PatientCardController extends Controller
         $Data = PatientCard::create($patientCard);
 
         $diagnosisController = new DiagnosisController();
-        $diagnosis = $patientCard["diagnosis"];
+        $diagnosis = $patientCard["diagnoses"];
         foreach ($diagnosis as $dia) {
-            $dia["patient_Id"]=$Data["id"];
+            $dia["patient_card_id"]=$Data["id"];
             $diagnosisController->storeDiagnosis($dia);
         }
         $extraInformationController = new ExtraInformationController();
         $extra_information = $patientCard["extra-information"];
         foreach ($extra_information as $information) {
-            $information["patient_Id"]=$Data["id"];
+            $information["patient_card_id"]=$Data["id"];
             $extraInformationController->storeExtraInformation($information);
         }
         return $Data ;

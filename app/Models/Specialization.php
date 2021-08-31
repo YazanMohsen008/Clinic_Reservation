@@ -10,7 +10,8 @@ class Specialization extends Model
     use HasFactory;
     protected $table='specialization';
     protected $fillable = [
-        'name',
+        'english-name',
+        'arabic-name',
     ];
     public function clinic(){
         return $this->hasMany(Clinic::Class,'id');

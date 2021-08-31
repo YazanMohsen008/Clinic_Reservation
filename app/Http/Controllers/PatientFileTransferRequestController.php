@@ -6,13 +6,19 @@ use App\Models\PatientCard;
 use App\Models\PatientFileTransferRequest;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class PatientFileTransferRequestController extends Controller
 {
     public function index()
     {
-        return response()->json(PatientFileTransferRequest::get(), 200);
+
+        $patientFileTransferRequests=PatientFileTransferRequest::get();
+        foreach ($patientFileTransferRequests as $patientFileTransferRequest)
+            $patientFileTransferRequest->receiverClinics;
+
+        return response()->json($patientFileTransferRequests, 200);
 
     }
 
@@ -24,11 +30,12 @@ class PatientFileTransferRequestController extends Controller
         $validator=Validator::make($request->all(),$rules);
         if($validator->fails())
             return response()->json($validator->errors(),400);
+        $request["sender_clinic_id"]=Auth::user()->getAuthIdentifier();
         $Data = PatientFileTransferRequest::create($request->all());
 
         $patientCardController=new PatientCardController;
         $patientCard=$patientCardController->storePatientCard($request->input("patient_card"));
-        $Data["patient_Id"]=$patientCard["id"];
+        $Data["patient_card_Id"]=$patientCard["id"];
 
         $receiverClinicController = new ReceiverClinicController();
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ReceiverClinic;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -48,35 +49,44 @@ class ReceiverClinicController extends Controller
     public function previewClinicTransferRequests( )
     {
         $clinic_id=Auth::user()->getAuthIdentifier();
-        $request = ReceiverClinic::where(['receiver_clinic_id' => $clinic_id])->get();
-        $patient_file_transfer_request=$request[0]->patient_file_transfer_request;
-        $patient_file_transfer_request->clinic;
-        $patientCard=$patient_file_transfer_request->PatientCard;
-        $patientCard->extraInformation;
-        if (is_null($request))
-            return response()->json(["message" => "404 Not Found"], 404);
-        return response()->json($request, 200);
+        $requests = ReceiverClinic::where(['receiver_clinic_id' => $clinic_id])->get();
+        foreach ($requests as $request) {
+            $patient_file_transfer_request = $request->patient_file_transfer_request;
+            $patient_file_transfer_request->clinic;
+            $patientCard = $patient_file_transfer_request->PatientCard;
+            $patientCard->extraInformation;
+            if (is_null($request))
+                return response()->json(["message" => "404 Not Found"], 404);
+
+        }
+        return response()->json($requests, 200);
     }
 
     public function downloadClinicTransferRequests( )
     {
         $clinic_id=Auth::user()->getAuthIdentifier();
-        $request = ReceiverClinic::where(['receiver_clinic_id' => $clinic_id])->get();
-        $patient_file_transfer_request=$request[0]->patient_file_transfer_request;
-        $patient_file_transfer_request->clinic;
-        $patientCard=$patient_file_transfer_request->PatientCard;
-        $patientCard->extraInformation;
-        $diagnosis=$patientCard->diagnosis;
-        for($i=0;$i<sizeof($diagnosis);$i++) {
-            $prescriptions=$diagnosis[$i]->prescriptions;
-                foreach ($prescriptions as $prescriptions){
-                    $prescriptions->medicines;
+        $requests = ReceiverClinic::where(['receiver_clinic_id' => $clinic_id])->get();
+        foreach ($requests as $request) {
+            $patient_file_transfer_request = $request->patient_file_transfer_request;
+            $patient_file_transfer_request->clinic;
+            $patientCard = $patient_file_transfer_request->PatientCard;
+            $patientCard->extraInformation;
+
+            $diagnosis = $patientCard->diagnosis;
+            for ($i = 0; $i < sizeof($diagnosis); $i++) {
+                $dia=$diagnosis[$i];
+                $prescriptions = $dia->prescriptions;
+                return response()->json($prescriptions, 404);
+
+                foreach ($prescriptions as $prescription) {
+                    $prescription->medicines;
+                }
+                $diagnosis[$i]->attachments;
             }
-            $diagnosis[$i]->attachments;
+            if (is_null($request))
+                return response()->json(["message" => "404 Not Found"], 404);
         }
-        if (is_null($request))
-            return response()->json(["message" => "404 Not Found"], 404);
-        return response()->json($request, 200);
+        return response()->json($requests, 200);
     }
 
     public function update(Request $request, $id)

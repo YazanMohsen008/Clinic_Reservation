@@ -36,7 +36,7 @@ class SystemAdminController extends Controller
         $user =Auth('system_admin')->user();
 
         $token = $user->createToken('token')->plainTextToken;
-        return response()->json(["message"=>"Success","token:"=>$token], 200);
+        return response()->json(["message"=>"Success","token"=>$token], 200);
     }
 
     public function getUser(){

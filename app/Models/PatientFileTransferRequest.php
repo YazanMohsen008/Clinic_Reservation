@@ -11,10 +11,10 @@ class PatientFileTransferRequest extends Model
     protected $table='patient_file_transfer_requests';
     protected $fillable = [
         "sender_clinic_id",
-        "patient_Id",
+        "patient_card_Id",
         "date"
     ];
-    public function clinic(){
+        public function clinic(){
         return $this->belongsTo(Clinic::Class,'sender_clinic_id');
     }
 

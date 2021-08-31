@@ -60,7 +60,7 @@ class ClinicController extends Controller
         }
         $user =Auth('clinic')->user() ;
         $token = $user->createToken('token')->plainTextToken;
-        return response()->json(["message"=>"Success","user"=>$user,"token:"=>$token], 200);
+        return response()->json(["message"=>"Success","user"=>$user,"token"=>$token], 200);
     }
 
 

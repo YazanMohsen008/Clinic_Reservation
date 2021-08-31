@@ -28,6 +28,7 @@ Route::get('specializations', [SpecializationController::class, 'index']);
 Route::middleware("auth:sanctum")->group(function () {
 
 
+        Route::get('patient_file_transfer_request', [PatientFileTransferRequestController::class, 'index']);
     Route::middleware("is:system_admin")->group(function () {
 
         Route::get('current-system-admin', [SystemAdminController::class, 'getUser']);
@@ -44,7 +45,6 @@ Route::middleware("auth:sanctum")->group(function () {
         Route::put('clinic/{id}', [ClinicController::class, 'update']);
         Route::delete('clinic/{id}', [ClinicController::class, 'destroy']);
 
-        Route::get('patient_file_transfer_request', [PatientFileTransferRequestController::class, 'index']);
 
     });
 

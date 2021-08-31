@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Diagnosis;
 use App\Models\ExtraInformation;
 use App\Models\PatientCard;
+use App\Models\Prescription;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -32,11 +33,11 @@ class DiagnosisController extends Controller
     public function storeDiagnosis(array $diagnosis)
     {
         $Data = Diagnosis::create($diagnosis);
-        $medicineController = new MedicineController();
-        $medicines = $diagnosis["medicines"];
-        foreach ($medicines as $medicine) {
-            $medicine["diagnosis_Id"]=$Data["id"];
-            $medicineController->storeMedicine( $medicine);
+        $prescriptionsController = new PrescriptionController();
+        $prescriptions = $diagnosis["prescriptions"];
+        foreach ($prescriptions as $prescription) {
+            $prescription["diagnosis_id"]=$Data["id"];
+            $prescriptionsController->storePrescription($prescription);
         }
         $attachmentController = new AttachmentController();
         $attachments = $diagnosis["attachments"];

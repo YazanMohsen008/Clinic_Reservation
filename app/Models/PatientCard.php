@@ -26,9 +26,9 @@ class PatientCard extends Model
         return $this->belongsTo(PatientFileTransferRequest::Class,'id');
     }
     public function diagnosis(){
-        return $this->hasMany(Diagnosis::Class,'patient_Id');
+        return $this->hasMany(Diagnosis::Class,'patient_card_Id');
     }
     public function extraInformation(){
-        return $this->hasMany(ExtraInformation::Class,'patient_Id');
+        return $this->hasMany(ExtraInformation::Class,'patient_card_Id');
     }
 }
