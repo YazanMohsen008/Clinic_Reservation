@@ -88,7 +88,7 @@ Route::middleware("auth:sanctum")->group(function () {
         //reservations
         Route::post('reservation_requests', [ReservationRequestController::class, 'store']);
         Route::get('patient-reservations', [PatientController::class, 'showPatientReservations']);
-        Route::delete('reservation-cancel', [ReservationRequestController::class, 'cancel']);
+        Route::delete('reservation_requests/{id}', [ReservationRequestController::class, 'destroy']);
 
         Route::put('patient', [PatientController::class, 'update']);
         Route::delete('patient', [PatientController::class, 'destroy']);

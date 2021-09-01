@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patient;
+use App\Models\Specialization;
 use http\Client\Curl\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -97,7 +98,9 @@ class PatientController extends Controller
         $consultations=$Data->consultations;
         foreach ($consultations as $consultation) {
             $consultation->clinic;
+            $consultation["specialization"] = Specialization::find($consultation["clinic_specialization"]);
         }
+
         return response()->json($Data->consultations, 200);
     }
     public function update(Request $request)
