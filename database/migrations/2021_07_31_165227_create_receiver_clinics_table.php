@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class aCreateReceiverClinicsTable extends Migration
+class CreateReceiverClinicsTable extends Migration
 {
     /**
      * Run the migrations.
