@@ -4,6 +4,7 @@ use App\Http\Controllers\ClinicController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PatientFileTransferRequestController;
+use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\ReceiverClinicController;
 use App\Http\Controllers\ReservationRequestController;
 use App\Http\Controllers\SpecializationController;
@@ -24,6 +25,7 @@ Route::post('patient-login', [PatientController::class, 'login']);
 Route::post('patient', [PatientController::class, 'store']);
 
 Route::get('specializations', [SpecializationController::class, 'index']);
+Route::get('prescription/{id}', [PrescriptionController::class, 'show']);
 
 Route::middleware("auth:sanctum")->group(function () {
 

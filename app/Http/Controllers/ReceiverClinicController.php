@@ -76,11 +76,10 @@ class ReceiverClinicController extends Controller
             for ($i = 0; $i < sizeof($diagnosis); $i++) {
                 $dia=$diagnosis[$i];
                 $prescriptions = $dia->prescriptions;
-                return response()->json($prescriptions, 404);
-
-                foreach ($prescriptions as $prescription) {
-                    $prescription->medicines;
-                }
+            for ($j = 0; $j < sizeof($prescriptions); $j++) {
+                $prescription = $prescriptions[$j];
+                $prescription->medicines;
+            }
                 $diagnosis[$i]->attachments;
             }
             if (is_null($request))

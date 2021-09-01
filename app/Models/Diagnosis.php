@@ -21,8 +21,8 @@ class Diagnosis extends Model
     public function patient(){
         return $this->belongsTo(PatientCard::Class,'patient_card_id');
     }
-    public function prescription() {
-        return $this->hasMany(Prescription::class);
+    public function prescriptions() {
+        return $this->hasMany(Prescription::class,'diagnosis_Id');
     }
 
     public function attachments(){

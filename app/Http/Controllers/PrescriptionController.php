@@ -17,7 +17,7 @@ class PrescriptionController extends Controller
     {
         $Data = Prescription::create($request);
         $medicineController = new MedicineController();
-        $medicines = $Data["medicines"];
+        $medicines = $request["medicines"];
         foreach ($medicines as $medicine) {
             $medicine["prescription_id"]=$Data["id"];
             $medicineController->storeMedicine($medicine);
