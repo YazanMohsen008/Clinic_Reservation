@@ -38,7 +38,7 @@ class ClinicController extends Controller
 
         //phone Number Storing
         $phoneNumberController = new PhoneNumberController;
-        $phoneNumbers = $request->input("phoneNumbers");
+        $phoneNumbers = $request->input("phone_number");
 
         //phone Number Validating
         foreach ($phoneNumbers as $phoneNumber) {
@@ -92,6 +92,7 @@ class ClinicController extends Controller
             return response()->json(["message" => "404 Not Found"], 404);
         $reservations = $Data->reservations;
         $counter=0;
+        $info=[];
         for($i=0;$i<sizeof($reservations);$i++){
             $reservation=$reservations[$i];
 

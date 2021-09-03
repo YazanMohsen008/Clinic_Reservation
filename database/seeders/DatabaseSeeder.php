@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
             , 'doctor_name' => "Yzn"
             , 'address' => "42KCZ"
             , 'email' => "Yzn@gmail.com"
-            , 'password' => "01"
+            , 'password' => bcrypt("01")
             , 'working_hours' => 6
             , 'IP_address' => "192.168.221.1"
             , 'specializationId' => 1
@@ -34,8 +34,8 @@ class DatabaseSeeder extends Seeder
             'name' => "AhmedClinic"
             , 'doctor_name' => "Ahmed"
             , 'address' => "72KCZ"
-            , 'email' => "Ahmed@gmail.com"
-            , 'password' => "01"
+            , 'email' => "cezar@gmail.com"
+            , 'password' => bcrypt("123")
             , 'working_hours' => 6
             , 'IP_address' => "192.168.221.1"
             , 'specializationId' => 1
@@ -54,14 +54,14 @@ class DatabaseSeeder extends Seeder
             , 'phone_number' => "092221124"
             , 'age' => 20
             , 'email' => "Majed@gmail.com"
-            , 'password' => "01"
+            , 'password' => bcrypt("01")
         ]);
         DB::table('patient')->insert([
             'full_name' => "Akram"
             , 'phone_number' => "092121124"
             , 'age' => 20
             , 'email' => "Akram@gmail.com"
-            , 'password' => "01"
+            , 'password' => bcrypt("01")
         ]);
 
         //This data for Reservation requests

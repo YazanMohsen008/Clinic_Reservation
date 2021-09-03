@@ -75,16 +75,18 @@ class PatientController extends Controller
             return response()->json(["message"=>"404 Not Found"], 404);
 
         $reservationRequests=$Data->reservationRequests;
-	$i=0;
+	    $i=0;
+        $responses=[];
         foreach ($reservationRequests as $reservationRequest)
             {
 		$responses[$i]["reservation_id"]=$reservationRequest["id"];
 		$responses[$i]["reservation_date"]=$reservationRequest["reservation_date"];
-		$responses[$i]["reservation_status"]=$reservationRequest["reservation_status"];
+		$responses[$i]["reservation_status"]=$reservationRequest["status"];
 		$responses[$i]["reservation_time"]=$reservationRequest["reservation_time"];
 		$clinic=$reservationRequest->clinic;
 		$responses[$i]["clinic_id"]=$clinic["id"];
 		$responses[$i]["doctor_name"]=$clinic["doctor_name"];
+                $i++;
 	}
 
         return response()->json($responses, 200);

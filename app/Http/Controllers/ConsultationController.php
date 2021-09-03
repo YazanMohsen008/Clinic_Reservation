@@ -15,7 +15,14 @@ class ConsultationController extends Controller
 {
     public function index()
     {
-        return response()->json(Consultation::get(), 200);
+
+        $consultations= Consultation::get();
+        foreach ($consultations as $consultation) {
+            $specialization= Specialization::where(['id' => $consultation["clinic_specialization"]])->get()->first();
+            $consultation["specialization"]=$specialization;
+            $consultation->clinic;
+        }
+        return response()->json($consultations, 200);
     }
 
     public function store(Request $request)

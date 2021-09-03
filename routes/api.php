@@ -23,15 +23,17 @@ Route::post('clinic-login', [ClinicController::class, 'login']);
 
 Route::post('patient-login', [PatientController::class, 'login']);
 Route::post('patient', [PatientController::class, 'store']);
+Route::get('patient', [PatientController::class, 'index']);
 
 Route::get('specializations', [SpecializationController::class, 'index']);
 Route::get('prescription/{id}', [PrescriptionController::class, 'show']);
+Route::get('reservation_requests', [ReservationRequestController::class, 'index']);
 
 Route::middleware("auth:sanctum")->group(function () {
 
 
         Route::get('patient_file_transfer_request', [PatientFileTransferRequestController::class, 'index']);
-    Route::middleware("is:system_admin")->group(function () {
+        Route::middleware("is:system_admin")->group(function () {
 
         Route::get('current-system-admin', [SystemAdminController::class, 'getUser']);
         Route::post('system-admin-logout', [SystemAdminController::class, 'logout']);
@@ -46,6 +48,8 @@ Route::middleware("auth:sanctum")->group(function () {
         Route::post('clinic', [ClinicController::class, 'store']);
         Route::put('clinic/{id}', [ClinicController::class, 'update']);
         Route::delete('clinic/{id}', [ClinicController::class, 'destroy']);
+        Route::get('consultations', [ConsultationController::class, 'index']);
+        Route::delete('consultation/{id}', [ConsultationController::class, 'destroy']);
 
 
     });
